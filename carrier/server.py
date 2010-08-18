@@ -102,5 +102,7 @@ def server_list():
     bottle.response.content_type = 'text/javascript'
     return json.dumps(servers.keys(), indent=2)
 
+application = bottle.app()
+
 if __name__ == '__main__':
     bottle.run(host='0.0.0.0', port=3000, server=bottle.PasteServer)
