@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>API Documentation &mdash; Carrier v0.1 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_MODINDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="Carrier v0.1 documentation" href="index.html" />
+    <link rel="prev" title="Welcome to Carrier’s documentation!" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Carrier’s documentation!"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">Carrier v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="api-documentation">
+<h1>API Documentation<a class="headerlink" href="#api-documentation" title="Permalink to this headline">¶</a></h1>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field"><th class="field-name">Release:</th><td class="field-body">0.1</td>
+</tr>
+<tr class="field"><th class="field-name">Date:</th><td class="field-body">August 18, 2010</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="endpoints">
+<h2>Endpoints<a class="headerlink" href="#endpoints" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="api-1-server">
+<h3>/api/1/:server<a class="headerlink" href="#api-1-server" title="Permalink to this headline">¶</a></h3>
+<p>Methods: GET, POST, PUT, DELETE</p>
+<p>Query, create, update, and delete this server resource. POST creates a new
+server object with this name, using the JSON configuration specified in the
+JSON body. If an empty configuration is sent, sane defaults are used. PUT
+updates the configuration for a VM in the STOPPED state only. DELETE destroys
+a VM and all data associated with it. GET returns the current status and config
+for the given resource.</p>
+<p>Examples:</p>
+<div class="highlight-python"><pre>curl -X POST --data-binary '{
+        "memory": 1024,
+        "disk": 50
+}' http://carrier:3000/api/1/t0000
+{
+  "state": "STOPPED",
+  "config": {
+    "vnc": 1,
+    "name": "t0000",
+    "nic": "e1000",
+    "boot": "n",
+    "mac": "02:52:0a:00:00:01",
+    "memory": 1024,
+    "console": 3001,
+    "disk": 10
+  }
+}</pre>
+</div>
+<div class="highlight-python"><pre>curl -X PUT --data-binary '{
+        "mac": "00:11:22:33:44:55"
+}' http://carrier:3000/api/1/t0000
+{
+  "state": "STOPPED",
+  "config": {
+    "vnc": 1,
+    "name": "t0000",
+    "nic": "e1000",
+    "boot": "n",
+    "mac": "00:11:22:33:44:55",
+    "memory": 1024,
+    "console": 3001,
+    "disk": 10
+  }
+}</pre>
+</div>
+<div class="highlight-python"><pre>curl -X GET http://carrier:3000/api/1/t0000
+{
+  "state": "STOPPED",
+  "config": {
+    "vnc": 1,
+    "name": "t0000",
+    "nic": "e1000",
+    "boot": "n",
+    "mac": "00:11:22:33:44:55",
+    "memory": 1024,
+    "console": 3001,
+    "disk": 10
+  }
+}</pre>
+</div>
+<div class="highlight-python"><pre>curl -X DELETE http://carrier:3000/api/1/t0000
+# Returns nothing.</pre>
+</div>
+</div>
+<div class="section" id="api-1-server-action">
+<h3>/api/1/:server/:action<a class="headerlink" href="#api-1-server-action" title="Permalink to this headline">¶</a></h3>
+<p>Methods: POST</p>
+<p>Perform an action on the given server. Valid actions are: start, stop</p>
+<p>Examples:</p>
+<div class="highlight-python"><pre>curl -X POST http://carrier:3000/api/1/t0000/start
+{
+  "state": "RUNNING",
+  "config": {
+    "vnc": 2,
+    "name": "t0000",
+    "nic": "e1000",
+    "boot": "n",
+    "mac": "02:52:0a:00:00:02",
+    "memory": 1024,
+    "console": 3002,
+    "disk": 10
+  }
+}</pre>
+</div>
+<div class="highlight-python"><pre>curl -X POST http://carrier:3000/api/1/t0000/stop
+{
+  "state": "STOPPED",
+  "config": {
+    "vnc": 2,
+    "name": "t0000",
+    "nic": "e1000",
+    "boot": "n",
+    "mac": "02:52:0a:00:00:02",
+    "memory": 1024,
+    "console": 3002,
+    "disk": 10
+  }
+}</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+            <h3><a href="index.html">Table Of Contents</a></h3>
+            <ul>
+<li><a class="reference external" href="">API Documentation</a><ul>
+<li><a class="reference external" href="#endpoints">Endpoints</a><ul>
+<li><a class="reference external" href="#api-1-server">/api/1/:server</a></li>
+<li><a class="reference external" href="#api-1-server-action">/api/1/:server/:action</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            <h4>Previous topic</h4>
+            <p class="topless"><a href="index.html"
+                                  title="previous chapter">Welcome to Carrier&#8217;s documentation!</a></p>
+            <h3>This Page</h3>
+            <ul class="this-page-menu">
+              <li><a href="sources/api.txt"
+                     rel="nofollow">Show Source</a></li>
+            </ul>
+          <div id="searchbox" style="display: none">
+            <h3>Quick search</h3>
+              <form class="search" action="search.html" method="get">
+                <input type="text" name="q" size="18" />
+                <input type="submit" value="Go" />
+                <input type="hidden" name="check_keywords" value="yes" />
+                <input type="hidden" name="area" value="default" />
+              </form>
+              <p class="searchtip" style="font-size: 90%">
+              Enter search terms or a module, class or function name.
+              </p>
+          </div>
+          <script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to Carrier’s documentation!"
+             >previous</a> |</li>
+        <li><a href="index.html">Carrier v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+      &copy; Copyright 2010, Jeremy Grosser.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 0.6.3.
+    </div>
+  </body>
+</html>
