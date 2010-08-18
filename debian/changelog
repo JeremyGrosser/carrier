@@ -1,3 +1,9 @@
+python-carrier (0.1-2) unstable; urgency=low
+
+  * Build for python2.5 only 
+
+ -- Jeremy Grosser <synack@digg.com>  Wed, 18 Aug 2010 14:44:08 -0700
+
 python-carrier (0.1-1) unstable; urgency=low
 
   * Initial release
