@@ -1,0 +1,12 @@
+Source: python-carrier
+Section: python
+Priority: extra
+Maintainer: Jeremy Grosser <synack@digg.com>
+Build-Depends: cdbs, debhelper (>= 7), python-all, python-support, python-setuptools
+Standards-Version: 3.7.3
+Homepage: http://synack.github.com/carrier/
+
+Package: python-carrier
+Architecture: any
+Depends: ${python:Depends}, python-bottle
+Description: A RESTful KVM control daemon
