@@ -6,6 +6,21 @@ from control import VirtualMachine
 
 bottle.debug(True)
 
+def load_servers():
+    try:
+        servers = json.load(file('/mnt/vm/servers.json'))
+        for name in servers:
+            servers[name] = VirtualMachine(servers[name])
+    except:
+        servers = {}
+    return servers
+
+def save_servers(servers):
+    res = {}
+    for name in servers:
+        res[name] = servers[name].get_config()
+    json.dump(file('/mnt/vm/servers.json', 'w'), res)
+
 def genconfig(console_base=3000, mac_prefix='02:52:0a'):
     nextid = 1
     while True:
@@ -22,12 +37,7 @@ def genconfig(console_base=3000, mac_prefix='02:52:0a'):
     return
 
 newconfig = genconfig()
-try:
-    servers = json.load(file('/mnt/vm/servers.json'))
-    for name in servers:
-        servers[name] = VirtualMachine(servers[name])
-except:
-    servers = {}
+servers = load_servers()
 
 @bottle.post('/api/1/:server/:action')
 def server_action(server, action):
@@ -54,6 +64,7 @@ def server_create(server):
 
     vm = VirtualMachine(config)
     servers[server] = vm
+    save_servers(servers)
 
     bottle.response.content_type = 'text/javascript'
     return json.dumps({
@@ -69,6 +80,7 @@ def server_update(server):
     if vm.get_state() != 'STOPPED': 
         bottle.abort(400, 'Cannot modify a running VM, stop it first.')
     vm.update(config)
+    save_servers(servers)
 
     bottle.response.content_type = 'text/javascript'
     return json.dumps({
@@ -84,6 +96,7 @@ def server_delete(server):
         bottle.abort(400, 'Cannot delete a running VM, stop it first.')
     vm.delete()
     del servers[server]
+    save_servers(servers)
     return
 
 @bottle.get('/api/1/:server')

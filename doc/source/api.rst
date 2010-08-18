@@ -8,6 +8,17 @@
 Endpoints
 ~~~~~~~~~
 
+/api/1/
+=======
+Methods: GET
+
+Returns a list of VMs on this host
+
+Example::
+
+	curl -X GET http://carrier:3000/api/1/
+	["t0000", "t0001", "t0002"]
+
 /api/1/:server
 ==============
 Methods: GET, POST, PUT, DELETE
