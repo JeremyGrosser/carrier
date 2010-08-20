@@ -23,7 +23,7 @@ def save_servers(servers):
     res = {}
     for name in servers:
         res[name] = servers[name].get_config()
-    json.dump(file('/mnt/vm/servers.json', 'w'), res)
+    json.dump(res, file('/mnt/vm/servers.json', 'w'), indent=2, sort_keys=True)
 
 def genconfig(console_base=3000, mac_prefix='02:52:0a'):
     nextid = 1
@@ -35,7 +35,7 @@ def genconfig(console_base=3000, mac_prefix='02:52:0a'):
             'nic': 'e1000',
             'memory': 1024,
             'disk': 10,
-            'boot': 'n',
+            'boot': 'cn',
         }
         nextid += 1
     return
