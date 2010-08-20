@@ -21,7 +21,7 @@ Example::
 
 /api/1/:server
 ==============
-Methods: GET, POST, PUT, DELETE
+Methods: GET, POST, PUT, DELETE, CONNECT
 
 Query, create, update, and delete this server resource. POST creates a new
 server object with this name, using the JSON configuration specified in the
@@ -90,6 +90,11 @@ Examples::
 
 	curl -X DELETE http://carrier:3000/api/1/t0000
 	# Returns nothing.
+
+::
+
+	curl -X CONNECT http://carrier:3000/api/1/t0000
+	# Connects to serial console, this is a two-way connection
 
 /api/1/:server/:action
 ======================
