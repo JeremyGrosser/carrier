@@ -9,8 +9,6 @@ class VirtualMachine(object):
         self.config = config
         self.process = None
 
-        self.create_disk()
-
     def create_disk(self):
         p = Popen('/usr/bin/qemu-img create -f qcow2 %s/%s.root %iG' % (
             self.STORAGE_PATH, self.config['name'], self.config['disk']), shell=True)

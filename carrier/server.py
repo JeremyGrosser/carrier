@@ -1,3 +1,7 @@
+from socket import socket
+from select import select
+from time import sleep
+
 import simplejson as json
 import struct
 import bottle
@@ -53,6 +57,35 @@ def server_action(server, action):
         'config': vm.get_config(),
     }, indent=2)
 
+@bottle.route('/api/1/:server', method='CONNECT')
+def server_console(server):
+    if not server in servers:
+        bottle.abort(404)
+
+    if servers[server].get_state() != 'RUNNING':
+        bottle.abort(503, 'VM is not running')
+
+    port = servers[server].get_config()['console']
+
+    sock = socket()
+    sock.connect(('127.0.0.1', port))
+
+    while True:
+        recvbuf = bottle.request.body.read(1024)
+
+        readable, writable, exception = select([sock], [sock], [sock], 0)
+        if exception:
+            return
+        if recvbuf and writable:
+            sock.sendall(recvbuf)
+        if readable:
+            sendbuf = sock.recv(1024)
+            if not sendbuf:
+                return
+            yield sendbuf
+        sleep(0.100)
+    return
+
 @bottle.post('/api/1/:server')
 def server_create(server):
     if server in servers:
@@ -63,6 +96,7 @@ def server_create(server):
     config['name'] = server
 
     vm = VirtualMachine(config)
+    vm.create_disk()
     servers[server] = vm
     save_servers(servers)
 
