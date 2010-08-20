@@ -1,3 +1,9 @@
+python-carrier (0.2.0-1) unstable; urgency=low
+
+  * Console support 
+
+ -- Jeremy Grosser <synack@digg.com>  Fri, 20 Aug 2010 14:42:10 -0700
+
 python-carrier (0.1-2) unstable; urgency=low
 
   * Build for python2.5 only 
